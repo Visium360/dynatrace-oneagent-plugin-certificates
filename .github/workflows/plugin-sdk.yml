@@ -28,6 +28,9 @@ jobs:
       image: ghcr.io/visium360/dynatrace-plugin-builder:main
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Verify
         run: plugin_sdk verify_plugin
 
