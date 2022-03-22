@@ -161,7 +161,7 @@ class CertificateCheckerPlugin(BasePlugin):
         if not hasattr(entity, 'processes'):
             return port_set
         for process in entity.processes:
-            listening_ports = process.properties.get("listeningPorts", None)
+            listening_ports = process.properties.get("ListeningPorts", None)
             if listening_ports is None:
                 continue
             if isinstance(listening_ports, list):
