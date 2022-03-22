@@ -4,6 +4,7 @@
     "ports_include": "443;1024-65535",
     "ports_exclude": "",
     "publish_metadata": true,
-    "check_interval": 4,
-    "additional_sni": ""
+    "check_interval": 1,
+    "additional_sni": "",
+    "debug": true
 }

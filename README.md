@@ -11,7 +11,7 @@ This is a Dynatrace OneAgent plugin for checking and verifying SSL/TLS certifica
 
 # Installation
 
-1. Download the release zip file from the [releases](releases) page named custom.python.sslcertcheck_plugin.zip.
+1. Download the release zip file from the [releases](releases) page named custom.python.certificates_plugin.zip.
 2. Upload the zip file to your Dynatrace tenant in Settings > Monitoring > Monitored technologies > Custom plugins and choose Upload plugin. More information is available in  [Dynatrace help](https://www.dynatrace.com/support/help/shortlink/plugins-python#upload-your-custom-plugin)
 3. Unzip the zip file on OneAgents into /opt/dynatrace/oneagent/plugin_deployment directory on hosts with OneAgents or to appropriate plug_deployment directory if you have installed the agent into non-default directory.
 4. OneAgents with the plugin deployed will discover certificates within few minutes. Discovery events can be seen in the events area at the host level and process group level.

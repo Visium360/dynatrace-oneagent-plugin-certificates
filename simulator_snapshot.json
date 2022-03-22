@@ -9,7 +9,7 @@
           "properties": {
             "CmdLine": "-m plugin_sdk.demo_app",
             "WorkDir": "/home/demo",
-            "ListeningPorts": "8769"
+            "ListeningPorts": "10933"
           }
         }
       ]
@@ -23,11 +23,12 @@
           "properties": {
             "CmdLine": "-cp jboss.jar",
             "WorkDir": "/home",
-            "ListeningPorts": [ "9090", "9091" ]
+            "ListeningPorts": [
+              "6443"
+            ]
           }
         }
       ]
     }
-
   ]
 }

@@ -1,77 +1,160 @@
 {
-  "name": "custom.python.sslcertcheck_plugin",
-  "version": "2.0",
+  "name": "custom.python.certificates_plugin",
+  "version": "1.0",
+  "requiredAgentVersion": "1.233.166",
   "type": "python",
-  "entity": "HOST",
-  "metricGroup": "ssl",
-  "technologies": ["LINUX_SYSTEM", "WINDOWS_SYSTEM"],
+  "entity": "PROCESS_GROUP_INSTANCE",
+  "favicon": "https://raw.githubusercontent.com/Visium360/dynatrace-oneagent-plugin-sslcertcheck/master/certificate-icon.svg",
+  "metricGroup": "tech.certificates",
   "source": {
-    "package": "sslcertcheck_plugin",
-    "className": "SSLCertCheck_Plugin",
-    "install_requires": [ "asn1crypto", "pytz" ],
+    "package": "certificate_checker_plugin",
+    "className": "CertificateCheckerPlugin",
+    "install_requires": [
+      "asn1crypto",
+      "pytz"
+    ],
     "activation": "Singleton"
   },
-  "metrics": [ {
+  "metrics": [
+    {
+      "entity": "PROCESS_GROUP_INSTANCE",
       "timeseries": {
-        "key": "certificates_found",
+        "key": "certificate",
         "unit": "Count",
-        "displayname": "Certificates found"
+        "dimensions": [
+          "serial_number",
+          "subject",
+          "issuer",
+          "not_before",
+          "not_after",
+          "valid_days"
+        ],
+        "displayname": "Certificate"
       }
+    },
+    {
+      "entity": "PROCESS_GROUP_INSTANCE",
+      "timeseries": {
+        "key": "certificate.valid_days",
+        "unit": "Count",
+        "dimensions": [
+          "serial_number",
+          "subject"
+        ],
+        "displayname": "Certificate remaining days"
+      },
+      "alert_settings": [
+        {
+          "alert_id": "certificate_expired",
+          "event_type": "ERROR_EVENT",
+          "event_name": "Certificate expiration",
+          "description": "A certificate is about to expire",
+          "threshold": 1,
+          "alert_condition": "BELOW",
+          "samples": 5,
+          "violating_samples": 3,
+          "dealerting_samples": 5
+        }
+      ]
     }
   ],
-   "configUI": {
-        "displayName": "SSL certificate check",
-        "properties" : [
-          { "key" : "days_event_info", "displayName": "Info event (days before expiration)", "displayOrder": 1 },
-          { "key" : "days_event_error", "displayName": "Error event (days before expiration)", "displayOrder": 2 },
-          { "key" : "ports_include", "displayName": "Port range to include", "displayOrder": 3 },
-          { "key" : "ports_exclude", "displayName": "Port range to exclude", "displayOrder": 4 },
-          { "key" : "publish_metadata", "displayName": "Show certificate info in metadata", "displayOrder":5 },
-          { "key" : "check_interval", "displayName": "Interval between checks (hours)", "displayOrder":6 },
-          { "key" : "additional_sni", "displayName": "Additional hostnames to check (SNI)", "displayOrder":7 },
-          { "key" : "debug", "displayName": "Debug logging", "displayOrder":8 }
-        ]
-    },
+  "configUI": {
+    "displayName": "SSL Certificates & Protocols",
     "properties": [
       {
-        "key" : "days_event_info",
-        "type" : "Integer",
-        "defaultValue" : 7
-      },      
-      {
-        "key" : "days_event_error",
-        "type" : "Integer",
-        "defaultValue" : 1
-      },      
-      {
-        "key" : "ports_include",
-        "type" : "String",
-        "defaultValue" : "443;1024-65535"
-      },      
-      {
-        "key" : "ports_exclude",
-        "type" : "String",
-        "defaultValue" : ""
-      },            
-      {
-        "key" : "publish_metadata",
-        "type" : "Boolean",
-        "defaultValue" : true
+        "key": "days_event_info",
+        "displayName": "Info event (days before expiration)",
+        "displayOrder": 1
       },
       {
-        "key" : "check_interval",
-        "type" : "Integer",
-        "defaultValue" : 4
+        "key": "days_event_error",
+        "displayName": "Error event (days before expiration)",
+        "displayOrder": 2
       },
       {
-        "key" : "additional_sni",
-        "type" : "String",
-        "defaultValue" : ""
+        "key": "ports_include",
+        "displayName": "Port range to include",
+        "displayOrder": 3
       },
       {
-        "key" : "debug",
-        "type" : "Boolean",
-        "defaultValue" : false
+        "key": "ports_exclude",
+        "displayName": "Port range to exclude",
+        "displayOrder": 4
+      },
+      {
+        "key": "publish_metadata",
+        "displayName": "Show certificate info in metadata",
+        "displayOrder": 5
+      },
+      {
+        "key": "check_interval",
+        "displayName": "Interval between checks (hours)",
+        "displayOrder": 6
+      },
+      {
+        "key": "additional_sni",
+        "displayName": "Additional hostnames to check (SNI)",
+        "displayOrder": 7
+      },
+      {
+        "key": "debug",
+        "displayName": "Debug logging",
+        "displayOrder": 8
       }
     ]
+  },
+  "properties": [
+    {
+      "key": "days_event_info",
+      "type": "Integer",
+      "defaultValue": 7
+    },
+    {
+      "key": "days_event_error",
+      "type": "Integer",
+      "defaultValue": 1
+    },
+    {
+      "key": "ports_include",
+      "type": "String",
+      "defaultValue": "443;1024-65535"
+    },
+    {
+      "key": "ports_exclude",
+      "type": "String",
+      "defaultValue": ""
+    },
+    {
+      "key": "publish_metadata",
+      "type": "Boolean",
+      "defaultValue": true
+    },
+    {
+      "key": "check_interval",
+      "type": "Integer",
+      "defaultValue": 4
+    },
+    {
+      "key": "additional_sni",
+      "type": "String",
+      "defaultValue": ""
+    },
+    {
+      "key": "debug",
+      "type": "Boolean",
+      "defaultValue": false
+    }
+  ],
+  "ui": {
+    "keymetrics": [
+      {
+        "key": "certificate.valid_days",
+        "aggregation": "min",
+        "mergeaggregation": "sum",
+        "displayname": "Certificate remaining days"
+      }
+    ],
+    "keycharts": [],
+    "charts": []
+  }
 }
