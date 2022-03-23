@@ -1,5 +1,7 @@
 # Dynatrace OneAgent SSL certificate check plugin
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Visium360_dynatrace-oneagent-plugin-sslcertcheck&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Visium360_dynatrace-oneagent-plugin-sslcertcheck)
+
 This is a Dynatrace OneAgent plugin for checking and verifying SSL/TLS certificate validity for services running on hosts monitored by OneAgent. OneAgent can be deployed in both full-stack and cloud intrastructore mode. This plugin sends informational and error events if server certificate used by a service is about to expire.
 
 # Features
